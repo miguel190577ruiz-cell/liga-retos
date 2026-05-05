@@ -79,7 +79,7 @@ export default function Home() {
     border: "1px solid #1f2937",
     minHeight: "190px",
     position:"relative",
-    zindex:10,
+    zIndex:10,
   }}
 >
   <h2 style={{ margin: "0 0 12px", fontSize: "16px" }}>
@@ -112,7 +112,7 @@ export default function Home() {
           textAlign: "left",
           cursor: "pointer",
           position:"relative",
-          zindex:20,
+          zIndex:20,
           touchAction:"manipulation",
         }}
       >
@@ -195,7 +195,7 @@ export default function Home() {
             display: "flex",
             justifyContent: "space-around",
             padding: "10px 0",
-            zindex:1,
+            zIndex:1,
             pointerEvents:"none",
           }}
         >
