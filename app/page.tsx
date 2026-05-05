@@ -11,6 +11,9 @@ const supabase = createClient(
 export default function Home() {
   const [desafios, setDesafios] = useState<any[]>([]);
   const [retoAbierto, setRetoAbierto] = useState<any>(null);
+const [adminAbierto, setAdminAbierto] = useState(false);
+const [pinCorrecto, setPinCorrecto] = useState(false);
+const [pinInput, setPinInput] = useState("");
 
   const jogadores = [
     { nome: "Miguel09", pontos: 320 },
@@ -196,15 +199,125 @@ export default function Home() {
             justifyContent: "space-around",
             padding: "10px 0",
             zIndex:1,
-            pointerEvents:"none",
+            pointerEvents:"auto",
           }}
         >
-          <button style={menuBtn}>⚽<br />Desafios</button>
+          
           <button style={menuBtn}>🏆<br />Semanal</button>
           <button style={menuBtn}>📊<br />Mensal</button>
-          <button style={menuBtn}>🔐<br />Admin</button>
+          <button
+  style={menuBtn}
+  onClick={() => {
+    console.log("CLICK ADMIN");
+    setAdminAbierto(true);
+  }}
+>
+  🔒 Admin
+</button>
         </nav>
       </div>
+{adminAbierto && !pinCorrecto && (
+  <div style={{
+    position: "fixed",
+    inset: 0,
+    background: "rgba(0,0,0,0.75)",
+    zIndex: 9999,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    padding: "20px",
+  }}>
+    <div style={{
+      width: "100%",
+      maxWidth: "360px",
+      background: "#020617",
+      border: "1px solid #22c55e",
+      borderRadius: "24px",
+      padding: "22px",
+      color: "white",
+    }}>
+      <h2>🔐 Acceso Admin</h2>
+
+      <input
+        type="password"
+        placeholder="PIN de 6 dígitos"
+        value={pinInput}
+        onChange={(e) => setPinInput(e.target.value)}
+        style={{
+          width: "100%",
+          padding: "14px",
+          borderRadius: "12px",
+          border: "1px solid #22c55e",
+          marginBottom: "12px",
+          fontSize: "18px",
+        }}
+      />
+
+      <button
+        onClick={() => {
+          if (pinInput === "190577") {
+            setPinCorrecto(true);
+          } else {
+            alert("PIN incorrecto");
+          }
+        }}
+        style={adminBtn}
+      >
+        Entrar
+      </button>
+
+      <button
+        onClick={() => {
+          setAdminAbierto(false);
+          setPinInput("");
+        }}
+        style={adminBtn}
+      >
+        Cancelar
+      </button>
+    </div>
+  </div>
+)}
+{adminAbierto && pinCorrecto && (
+  <div style={{
+    position: "fixed",
+    inset: 0,
+    background: "rgba(0,0,0,0.75)",
+    zIndex: 9999,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    padding: "20px",
+  }}>
+    <div style={{
+      width: "100%",
+      maxWidth: "380px",
+      background: "#020617",
+      border: "1px solid #22c55e",
+      borderRadius: "24px",
+      padding: "22px",
+      color: "white",
+    }}>
+      <h2>🔐 Administrador</h2>
+
+      <button style={adminBtn}>➕ Añadir jugador</button>
+      <button style={adminBtn}>🗑️ Borrar jugador</button>
+      <button style={adminBtn}>⭐ Gestionar puntos</button>
+      <button style={adminBtn}>🎯 Editar desafíos</button>
+
+      <button
+        onClick={() => {
+          setAdminAbierto(false);
+          setPinCorrecto(false);
+          setPinInput("");
+        }}
+        style={adminBtn}
+      >
+        Cerrar
+      </button>
+    </div>
+  </div>
+)}
 
       {retoAbierto && (
         <div
@@ -263,6 +376,18 @@ export default function Home() {
     </main>
   );
 }
+const adminBtn = {
+  width: "100%",
+  padding: "14px",
+  marginBottom: "10px",
+  borderRadius: "14px",
+  border: "1px solid #22c55e",
+  background: "rgba(34,197,94,0.12)",
+  color: "white",
+  fontWeight: "bold",
+  fontSize: "15px",
+  cursor: "pointer",
+};
 
 const menuBtn = {
   background: "none",
