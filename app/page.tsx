@@ -12,6 +12,7 @@ export default function Home() {
   const [desafios, setDesafios] = useState<any[]>([]);
   const [retoAbierto, setRetoAbierto] = useState<any>(null);
   const [modoAdmin, setModoAdmin] = useState("");
+  const [pantalla, setPantalla] = useState("inicio");
   const [nuevoJugador, setNuevoJugador] = useState("");
   const [puntosAdmin, setPuntosAdmin] = useState("");
   const [adminAbierto, setAdminAbierto] = useState(false);
@@ -221,8 +222,13 @@ export default function Home() {
             pointerEvents: "auto",
           }}
         >
-          <button style={menuBtn}>🏆<br />Semanal</button>
-          <button style={menuBtn}>📊<br />Mensal</button>
+          <button style={menuBtn} onClick={() => setPantalla("semanal")}>
+  🏆<br />Semanal
+</button>
+
+<button style={menuBtn} onClick={() => setPantalla("mensal")}>
+  📊<br />Mensal
+</button>
           <button
             style={menuBtn}
             onClick={() => {
@@ -553,7 +559,152 @@ export default function Home() {
           </div>
         </div>
       )}
+{pantalla === "semanal" && (
+  <div
+    style={{
+      position: "fixed",
+      inset: 0,
+      background: "#020617",
+      zIndex: 5000,
+      overflowY: "auto",
+      padding: "20px",
+      color: "white",
+    }}
+  >
+    <h1
+      style={{
+        textAlign: "center",
+        fontSize: "34px",
+        marginBottom: "6px",
+      }}
+    >
+      🏆 CLASIFICACIÓN
+    </h1>
 
+    <h2
+      style={{
+        textAlign: "center",
+        color: "#22c55e",
+        marginBottom: "24px",
+      }}
+    >
+      SEMANAL
+    </h2>
+
+    <div
+      style={{
+        display: "grid",
+        gridTemplateColumns: "1fr 1fr 1fr",
+        gap: "10px",
+        marginBottom: "24px",
+        alignItems: "end",
+      }}
+    >
+      {[1, 0, 2].map((pos) => {
+        const j = jogadores[pos];
+        if (!j) return <div key={pos}></div>;
+
+        return (
+          <div
+            key={j.id}
+            style={{
+              background:
+                pos === 0
+                  ? "rgba(255,215,0,0.15)"
+                  : "rgba(255,255,255,0.06)",
+              border:
+                pos === 0
+                  ? "2px solid gold"
+                  : "1px solid #22c55e",
+              borderRadius: "20px",
+              padding: "18px 10px",
+              textAlign: "center",
+              transform:
+                pos === 0 ? "scale(1.08)" : "scale(1)",
+            }}
+          >
+            <div style={{ fontSize: "28px", marginBottom: "10px" }}>
+              {pos === 0 ? "👑" : "⚽"}
+            </div>
+
+            <div style={{ fontWeight: "bold" }}>
+              #{pos + 1}
+            </div>
+
+            <div
+              style={{
+                fontWeight: "bold",
+                marginTop: "8px",
+                fontSize: "16px",
+              }}
+            >
+              {j.nome}
+            </div>
+
+            <div
+              style={{
+                color: "#22c55e",
+                marginTop: "8px",
+                fontWeight: "bold",
+              }}
+            >
+              {j.pontos_semanal} pts
+            </div>
+          </div>
+        );
+      })}
+    </div>
+
+    <div>
+      {jogadores.map((j: any, i) => (
+        <div
+          key={j.id}
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            background: "rgba(255,255,255,0.05)",
+            border: "1px solid #1f2937",
+            borderRadius: "14px",
+            padding: "14px",
+            marginBottom: "10px",
+          }}
+        >
+          <div>
+            <strong>
+              #{i + 1} {j.nome}
+            </strong>
+          </div>
+
+          <div
+            style={{
+              color: "#22c55e",
+              fontWeight: "bold",
+            }}
+          >
+            {j.pontos_semanal} pts
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <button
+      style={{
+        width: "100%",
+        marginTop: "20px",
+        padding: "14px",
+        borderRadius: "14px",
+        border: "none",
+        background: "#22c55e",
+        color: "black",
+        fontWeight: "bold",
+      }}
+      onClick={() => setPantalla("inicio")}
+    >
+      Fechar
+    </button>
+  </div>
+)}
       {retoAbierto && (
         <div style={modalFondo}>
           <div style={modalCaja}>
@@ -629,6 +780,9 @@ const modalCaja = {
   borderRadius: "24px",
   padding: "22px",
   color: "white",
+  maxHeight: "85vh",
+overflowY: "auto",
+boxSizing: "border-box",
 };
 
 const inputStyle = {
