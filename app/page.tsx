@@ -4,42 +4,52 @@ import { useEffect, useState } from "react";
 import { createClient } from "@supabase/supabase-js";
 
 const supabase = createClient(
-  "https://rldffnkqebxigtygpxwa.supabase.co",
-  "sb_publishable_e8lnYDhwxDcj44ZmrAsuIg_zplmJRAK"
+  "https://mmfuhvlxjzvfotonjycw.supabase.co",
+  "sb_publishable_wy2qvGG23Ozj-unBH8YqKQ_ZyC7ArIu"
 );
 
 export default function Home() {
   const [desafios, setDesafios] = useState<any[]>([]);
   const [retoAbierto, setRetoAbierto] = useState<any>(null);
-const [adminAbierto, setAdminAbierto] = useState(false);
-const [pinCorrecto, setPinCorrecto] = useState(false);
-const [pinInput, setPinInput] = useState("");
+  const [modoAdmin, setModoAdmin] = useState("");
+  const [nuevoJugador, setNuevoJugador] = useState("");
+  const [adminAbierto, setAdminAbierto] = useState(false);
+  const [pinCorrecto, setPinCorrecto] = useState(false);
+  const [pinInput, setPinInput] = useState("");
+  const [jogadores, setJogadores] = useState<any[]>([]);
 
-  const jogadores = [
-    { nome: "Miguel09", pontos: 320 },
-    { nome: "Crack77", pontos: 280 },
-    { nome: "Tigre10", pontos: 240 },
-  ];
+  useEffect(() => {
+    async function carregarDesafios() {
+      const { data, error } = await supabase
+        .from("desafios")
+        .select("*")
+        .order("posicion", { ascending: true });
 
- useEffect(() => {
-  async function carregarDesafios() {
-    const { data, error } = await supabase
-      .from("desafios")
-      .select("*")
-      .order("posicion", { ascending: true });
+      if (error) {
+        alert("ERROR SUPABASE: " + error.message);
+        return;
+      }
 
-    if (error) {
-      alert("ERROR SUPABASE: " + error.message);
-      return;
+      setDesafios(data || []);
     }
 
-    
+    async function carregarJogadores() {
+      const { data, error } = await supabase
+        .from("jogadores")
+        .select("*")
+        .order("pontos_semanal", { ascending: false });
 
-    setDesafios(data || []);
-  }
+      if (error) {
+        alert("ERROR JUGADORES: " + error.message);
+        return;
+      }
 
-  carregarDesafios();
-}, []);
+      setJogadores(data || []);
+    }
+
+    carregarDesafios();
+    carregarJogadores();
+  }, []);
 
   return (
     <main
@@ -72,71 +82,74 @@ const [pinInput, setPinInput] = useState("");
         />
 
         <section
-  style={{
-    backgroundImage: "url('/bg-desafios.png')",
-    backgroundSize: "cover",
-    backgroundPosition: "center",
-    borderRadius: "22px",
-    padding: "16px 10px",
-    marginBottom: "14px",
-    border: "1px solid #1f2937",
-    minHeight: "190px",
-    position:"relative",
-    zIndex:10,
-  }}
->
-  <h2 style={{ margin: "0 0 12px", fontSize: "16px" }}>
-    🔥 Desafios ativos
-  </h2>
-
-  <div
-    style={{
-      display: "grid",
-      gridTemplateColumns: "1fr 1fr 1fr",
-      gap: "8px",
-    }}
-  >
-    {(desafios && desafios.length > 0 ? desafios : [
-  { titulo: "20 toques", pontos: 50, descricao: "..." },
-  { titulo: "Chute na trave", pontos: 100, descricao: "..." },
-  { titulo: "Pé fraco", pontos: 30, descricao: "..." }
-]).slice(0, 3).map((desafio, index) => (
-      <button
-        key={index}
-        onClick={() => setRetoAbierto(desafio)}
-        style={{
-          background: "rgba(0, 0, 0, 0.25)",
-          backdropFilter: "blur(12px)",
-          border: "1px solid rgba(34, 197, 94, 0.8)",
-          color: "white",
-          borderRadius: "16px",
-          padding: "34px 10px",
-          minHeight: "120px",
-          textAlign: "left",
-          cursor: "pointer",
-          position:"relative",
-          zIndex:20,
-          touchAction:"manipulation",
-        }}
-      >
-        <strong style={{ fontSize: "16px" }}>{desafio.titulo}</strong>
-
-        <p
           style={{
-            color: "#22c55e",
-            margin: "10px 0 0",
-            fontWeight: "bold",
-            fontSize: "16px",
+            backgroundImage: "url('/bg-desafios.png')",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            borderRadius: "22px",
+            padding: "16px 10px",
+            marginBottom: "14px",
+            border: "1px solid #1f2937",
+            minHeight: "190px",
+            position: "relative",
+            zIndex: 10,
           }}
         >
-          +{desafio.pontos} pts
-        </p>
-      </button>
-    ))}
-  </div>
-</section>
+          <h2 style={{ margin: "0 0 12px", fontSize: "16px" }}>
+            🔥 Desafios ativos
+          </h2>
 
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "1fr 1fr 1fr",
+              gap: "8px",
+            }}
+          >
+            {(desafios.length > 0
+              ? desafios
+              : [
+                  { titulo: "20 toques", pontos: 50, descricao: "..." },
+                  { titulo: "Chute na trave", pontos: 100, descricao: "..." },
+                  { titulo: "Pé fraco", pontos: 30, descricao: "..." },
+                ]
+            )
+              .slice(0, 3)
+              .map((desafio, index) => (
+                <button
+                  key={index}
+                  onClick={() => setRetoAbierto(desafio)}
+                  style={{
+                    background: "rgba(0, 0, 0, 0.25)",
+                    backdropFilter: "blur(12px)",
+                    border: "1px solid rgba(34, 197, 94, 0.8)",
+                    color: "white",
+                    borderRadius: "16px",
+                    padding: "34px 10px",
+                    minHeight: "120px",
+                    textAlign: "left",
+                    cursor: "pointer",
+                    position: "relative",
+                    zIndex: 20,
+                    touchAction: "manipulation",
+                  }}
+                >
+                  <strong style={{ fontSize: "16px" }}>{desafio.titulo}</strong>
 
+                  <p
+                    style={{
+                      color: "#22c55e",
+                      margin: "10px 0 0",
+                      fontWeight: "bold",
+                      fontSize: "16px",
+                    }}
+                  >
+                    +{desafio.pontos} pts
+                  </p>
+                </button>
+              ))}
+          </div>
+        </section>
 
         <section
           style={{
@@ -161,30 +174,35 @@ const [pinInput, setPinInput] = useState("");
               gap: "8px",
             }}
           >
-            {jogadores.map((j, i) => (
-              <div
-                key={i}
-                style={{
-                  background: "rgba(0,0,0,0.65)",
-                  border: "1px solid #22c55e",
-                  borderRadius: "16px",
-                  padding: "10px 6px",
-                  textAlign: "center",
-                }}
-              >
-                <div style={{ fontWeight: "bold" }}>{i + 1}º</div>
-                <div style={{ fontWeight: "bold", fontSize: "14px" }}>
-                  {j.nome}
+            {[0, 1, 2].map((i) => {
+              const j = jogadores[i];
+
+              return (
+                <div
+                  key={i}
+                  style={{
+                    background: "rgba(0,0,0,0.65)",
+                    border: "1px solid #22c55e",
+                    borderRadius: "16px",
+                    padding: "10px 6px",
+                    textAlign: "center",
+                  }}
+                >
+                  <div style={{ fontWeight: "bold" }}>{i + 1}º</div>
+
+                  <div style={{ fontWeight: "bold", fontSize: "14px" }}>
+                    {j ? j.nome : "—"}
+                  </div>
+
+                  <div style={{ color: "#22c55e", fontWeight: "bold" }}>
+                    {j ? j.pontos_semanal : 0} pts
+                  </div>
                 </div>
-                <div style={{ color: "#22c55e", fontWeight: "bold" }}>
-                  {j.pontos} pts
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </section>
 
-          
         <nav
           style={{
             position: "fixed",
@@ -198,152 +216,248 @@ const [pinInput, setPinInput] = useState("");
             display: "flex",
             justifyContent: "space-around",
             padding: "10px 0",
-            zIndex:1,
-            pointerEvents:"auto",
+            zIndex: 1,
+            pointerEvents: "auto",
           }}
         >
-          
           <button style={menuBtn}>🏆<br />Semanal</button>
           <button style={menuBtn}>📊<br />Mensal</button>
           <button
-  style={menuBtn}
-  onClick={() => {
-    console.log("CLICK ADMIN");
-    setAdminAbierto(true);
-  }}
->
-  🔒 Admin
-</button>
-        </nav>
-      </div>
-{adminAbierto && !pinCorrecto && (
-  <div style={{
-    position: "fixed",
-    inset: 0,
-    background: "rgba(0,0,0,0.75)",
-    zIndex: 9999,
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    padding: "20px",
-  }}>
-    <div style={{
-      width: "100%",
-      maxWidth: "360px",
-      background: "#020617",
-      border: "1px solid #22c55e",
-      borderRadius: "24px",
-      padding: "22px",
-      color: "white",
-    }}>
-      <h2>🔐 Acceso Admin</h2>
-
-      <input
-        type="password"
-        placeholder="PIN de 6 dígitos"
-        value={pinInput}
-        onChange={(e) => setPinInput(e.target.value)}
-        style={{
-          width: "100%",
-          padding: "14px",
-          borderRadius: "12px",
-          border: "1px solid #22c55e",
-          marginBottom: "12px",
-          fontSize: "18px",
-        }}
-      />
-
-      <button
-        onClick={() => {
-          if (pinInput === "190577") {
-            setPinCorrecto(true);
-          } else {
-            alert("PIN incorrecto");
-          }
-        }}
-        style={adminBtn}
-      >
-        Entrar
-      </button>
-
-      <button
-        onClick={() => {
-          setAdminAbierto(false);
-          setPinInput("");
-        }}
-        style={adminBtn}
-      >
-        Cancelar
-      </button>
-    </div>
-  </div>
-)}
-{adminAbierto && pinCorrecto && (
-  <div style={{
-    position: "fixed",
-    inset: 0,
-    background: "rgba(0,0,0,0.75)",
-    zIndex: 9999,
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    padding: "20px",
-  }}>
-    <div style={{
-      width: "100%",
-      maxWidth: "380px",
-      background: "#020617",
-      border: "1px solid #22c55e",
-      borderRadius: "24px",
-      padding: "22px",
-      color: "white",
-    }}>
-      <h2>🔐 Administrador</h2>
-
-      <button style={adminBtn}>➕ Añadir jugador</button>
-      <button style={adminBtn}>🗑️ Borrar jugador</button>
-      <button style={adminBtn}>⭐ Gestionar puntos</button>
-      <button style={adminBtn}>🎯 Editar desafíos</button>
-
-      <button
-        onClick={() => {
-          setAdminAbierto(false);
-          setPinCorrecto(false);
-          setPinInput("");
-        }}
-        style={adminBtn}
-      >
-        Cerrar
-      </button>
-    </div>
-  </div>
-)}
-
-      {retoAbierto && (
-        <div
-          style={{
-            position: "fixed",
-            inset: 0,
-            background: "rgba(0,0,0,0.8)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            padding: "20px",
-            zIndex: 999,
-          }}
-        >
-          <div
-            style={{
-              width: "100%",
-              maxWidth: "380px",
-              background: "#020617",
-              border: "1px solid #22c55e",
-              borderRadius: "24px",
-              padding: "22px",
-              color: "white",
-              boxShadow: "0 0 35px rgba(34,197,94,0.4)",
+            style={menuBtn}
+            onClick={() => {
+              setAdminAbierto(true);
             }}
           >
+            🔒 Admin
+          </button>
+        </nav>
+      </div>
+
+      {adminAbierto && !pinCorrecto && (
+        <div style={modalFondo}>
+          <div style={modalCaja}>
+            <h2>🔐 Acceso Admin</h2>
+
+            <input
+              type="password"
+              placeholder="PIN de 6 dígitos"
+              value={pinInput}
+              onChange={(e) => setPinInput(e.target.value)}
+              style={inputStyle}
+            />
+
+            <button
+              onClick={() => {
+                if (pinInput === "190577") {
+                  setPinCorrecto(true);
+                } else {
+                  alert("PIN incorrecto");
+                }
+              }}
+              style={adminBtn}
+            >
+              Entrar
+            </button>
+
+            <button
+              onClick={() => {
+                setAdminAbierto(false);
+                setPinInput("");
+              }}
+              style={adminBtn}
+            >
+              Cancelar
+            </button>
+          </div>
+        </div>
+      )}
+
+      {adminAbierto && pinCorrecto && (
+        <div style={modalFondo}>
+          <div style={modalCaja}>
+            <h2>🔐 Administrador</h2>
+
+            {modoAdmin === "editarDesafios" && (
+              <div style={{ marginTop: "12px" }}>
+                <p style={{ color: "#22c55e", fontWeight: "bold" }}>
+                  Editar desafíos abierto ✅
+                </p>
+
+                {desafios.map((d, i) => (
+                  <div key={d.id} style={{ marginBottom: "10px" }}>
+                    <input
+                      value={d.titulo}
+                      onChange={(e) => {
+                        const nuevos = [...desafios];
+                        nuevos[i].titulo = e.target.value;
+                        setDesafios(nuevos);
+                      }}
+                      style={inputStyle}
+                    />
+
+                    <input
+                      type="number"
+                      value={d.pontos}
+                      onChange={(e) => {
+                        const nuevos = [...desafios];
+                        nuevos[i].pontos = Number(e.target.value);
+                        setDesafios(nuevos);
+                      }}
+                      style={inputStyle}
+                    />
+
+                    <textarea
+                      value={d.descricao}
+                      onChange={(e) => {
+                        const nuevos = [...desafios];
+                        nuevos[i].descricao = e.target.value;
+                        setDesafios(nuevos);
+                      }}
+                      style={inputStyle}
+                    />
+
+                    <button
+                      onClick={async () => {
+                        const { error } = await supabase
+                          .from("desafios")
+                          .update({
+                            titulo: d.titulo,
+                            descricao: d.descricao,
+                            pontos: d.pontos,
+                          })
+                          .eq("id", d.id);
+
+                        if (error) {
+                          alert("Error: " + error.message);
+                        } else {
+                          alert("Desafío guardado ✅");
+                        }
+                      }}
+                      style={adminBtn}
+                    >
+                      💾 Guardar desafío
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {modoAdmin === "addJugador" && (
+              <div style={{ marginTop: "12px" }}>
+                <input
+                  placeholder="Nombre del jugador"
+                  value={nuevoJugador}
+                  onChange={(e) => setNuevoJugador(e.target.value)}
+                  style={inputStyle}
+                />
+
+                <button
+                  style={adminBtn}
+                  onClick={async () => {
+                    if (!nuevoJugador) return;
+
+                    const { error } = await supabase
+                      .from("jogadores")
+                      .insert([
+                        {
+                          nome: nuevoJugador,
+                          pontos_semanal: 0,
+                          pontos_mensal: 0,
+                        },
+                      ]);
+
+                    if (error) {
+                      alert("ERROR AÑADIENDO: " + error.message);
+                      return;
+                    }
+
+                    alert("Jugador añadido ✅");
+                    setNuevoJugador("");
+                    location.reload();
+                  }}
+                >
+                  💾 Guardar jugador
+                </button>
+              </div>
+            )}
+
+            {modoAdmin === "borrarJugador" && (
+              <div style={{ marginTop: "12px" }}>
+                <input
+                  placeholder="Nombre del jugador a borrar"
+                  value={nuevoJugador}
+                  onChange={(e) => setNuevoJugador(e.target.value)}
+                  style={inputStyle}
+                />
+
+                <button
+                  style={adminBtn}
+                  onClick={async () => {
+                    if (!nuevoJugador) return;
+
+                    const { error } = await supabase
+                      .from("jogadores")
+                      .delete()
+                      .eq("nome", nuevoJugador);
+
+                    if (error) {
+                      alert("ERROR BORRANDO: " + error.message);
+                      return;
+                    }
+
+                    alert("Jugador borrado ✅");
+                    setNuevoJugador("");
+                    location.reload();
+                  }}
+                >
+                  🗑️ Confirmar borrar
+                </button>
+              </div>
+            )}
+
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: "10px",
+                marginTop: "12px",
+              }}
+            >
+              <button style={adminBtn} onClick={() => setModoAdmin("addJugador")}>
+                ➕ Añadir jugador
+              </button>
+
+              <button style={adminBtn} onClick={() => setModoAdmin("borrarJugador")}>
+                🗑️ Borrar jugador
+              </button>
+
+              <button style={adminBtn} onClick={() => setModoAdmin("gestionarPuntos")}>
+                ⭐ Gestionar puntos
+              </button>
+
+              <button style={adminBtn} onClick={() => setModoAdmin("editarDesafios")}>
+                🎯 Editar desafíos
+              </button>
+
+              <button
+                style={adminBtn}
+                onClick={() => {
+                  setAdminAbierto(false);
+                  setPinCorrecto(false);
+                  setPinInput("");
+                  setModoAdmin("");
+                }}
+              >
+                Cerrar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {retoAbierto && (
+        <div style={modalFondo}>
+          <div style={modalCaja}>
             <h2>{retoAbierto.titulo}</h2>
 
             <p style={{ color: "#22c55e", fontSize: "22px", fontWeight: "bold" }}>
@@ -352,7 +466,6 @@ const [pinInput, setPinInput] = useState("");
 
             <p style={{ color: "#cbd5e1", lineHeight: 1.5 }}>
               {retoAbierto?.descricao}
-            
             </p>
 
             <button
@@ -376,6 +489,7 @@ const [pinInput, setPinInput] = useState("");
     </main>
   );
 }
+
 const adminBtn = {
   width: "100%",
   padding: "14px",
@@ -397,3 +511,31 @@ const menuBtn = {
   fontSize: "12px",
 };
 
+const modalFondo = {
+  position: "fixed" as const,
+  inset: 0,
+  background: "rgba(0,0,0,0.75)",
+  zIndex: 9999,
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  padding: "20px",
+};
+
+const modalCaja = {
+  width: "100%",
+  maxWidth: "380px",
+  background: "#020617",
+  border: "1px solid #22c55e",
+  borderRadius: "24px",
+  padding: "22px",
+  color: "white",
+};
+
+const inputStyle = {
+  width: "100%",
+  padding: "10px",
+  borderRadius: "8px",
+  border: "none",
+  marginBottom: "10px",
+};
