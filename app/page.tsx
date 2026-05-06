@@ -946,7 +946,7 @@ const modalCaja = {
   color: "white",
   maxHeight: "85vh",
 overflowY: "auto",
-boxSizing: "border-box",
+boxSizing: "border-box" as const,
 };
 
 const inputStyle = {
