@@ -218,7 +218,7 @@ export default function Home() {
             display: "flex",
             justifyContent: "space-around",
             padding: "10px 0",
-            zIndex: 1,
+            zIndex: 99999,
             pointerEvents: "auto",
           }}
         >
