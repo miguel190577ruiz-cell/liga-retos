@@ -469,7 +469,10 @@ export default function Home() {
 
         const { error } = await supabase
           .from("jogadores")
-          .update({ pontos_semanal: nuevosPuntos })
+          .update({
+  pontos_semanal: nuevosPuntos,
+  pontos_mensal: (jugador.pontos_mensal || 0) + Number(puntosAdmin),
+})
           .eq("id", jugador.id);
 
         if (error) {
@@ -502,7 +505,10 @@ export default function Home() {
 
         const { error } = await supabase
           .from("jogadores")
-          .update({ pontos_semanal: nuevosPuntos })
+          .update({
+  pontos_semanal: nuevosPuntos,
+  pontos_mensal: (jugador.pontos_mensal || 0) - Number(puntosAdmin),
+})
           .eq("id", jugador.id);
 
         if (error) {
