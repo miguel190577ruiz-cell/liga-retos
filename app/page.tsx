@@ -13,6 +13,7 @@ export default function Home() {
   const [retoAbierto, setRetoAbierto] = useState<any>(null);
   const [modoAdmin, setModoAdmin] = useState("");
   const [nuevoJugador, setNuevoJugador] = useState("");
+  const [puntosAdmin, setPuntosAdmin] = useState("");
   const [adminAbierto, setAdminAbierto] = useState(false);
   const [pinCorrecto, setPinCorrecto] = useState(false);
   const [pinInput, setPinInput] = useState("");
@@ -248,7 +249,7 @@ export default function Home() {
 
             <button
               onClick={() => {
-                if (pinInput === "190577") {
+                if (pinInput === "777777") {
                   setPinCorrecto(true);
                 } else {
                   alert("PIN incorrecto");
@@ -389,7 +390,7 @@ export default function Home() {
                   onChange={(e) => setNuevoJugador(e.target.value)}
                   style={inputStyle}
                 />
-
+                
                 <button
                   style={adminBtn}
                   onClick={async () => {
@@ -414,6 +415,104 @@ export default function Home() {
                 </button>
               </div>
             )}
+{modoAdmin === "gestionarPuntos" && (
+  <div style={{ marginTop: "12px" }}>
+    
+    <input
+      placeholder="Nombre del jugador"
+      value={nuevoJugador}
+      onChange={(e) => setNuevoJugador(e.target.value)}
+      style={{
+        width: "100%",
+        padding: "10px",
+        borderRadius: "8px",
+        border: "none",
+        marginBottom: "10px",
+      }}
+    />
+
+    <input
+      type="number"
+      placeholder="Puntos"
+      value={puntosAdmin}
+      onChange={(e) => setPuntosAdmin(e.target.value)}
+      style={{
+        width: "100%",
+        padding: "10px",
+        borderRadius: "8px",
+        border: "none",
+        marginBottom: "10px",
+      }}
+    />
+
+    <button
+      style={adminBtn}
+      onClick={async () => {
+        const jugador = jogadores.find(
+          (j: any) =>
+            j.nome.toLowerCase() === nuevoJugador.toLowerCase()
+        );
+
+        if (!jugador) {
+          alert("Jugador no encontrado");
+          return;
+        }
+
+        const nuevosPuntos =
+          jugador.pontos_semanal + Number(puntosAdmin);
+
+        const { error } = await supabase
+          .from("jogadores")
+          .update({ pontos_semanal: nuevosPuntos })
+          .eq("id", jugador.id);
+
+        if (error) {
+          alert(error.message);
+          return;
+        }
+
+        alert("Puntos sumados ✅");
+        location.reload();
+      }}
+    >
+      ➕ Sumar puntos
+    </button>
+
+    <button
+      style={adminBtn}
+      onClick={async () => {
+        const jugador = jogadores.find(
+          (j: any) =>
+            j.nome.toLowerCase() === nuevoJugador.toLowerCase()
+        );
+
+        if (!jugador) {
+          alert("Jugador no encontrado");
+          return;
+        }
+
+        const nuevosPuntos =
+          jugador.pontos_semanal - Number(puntosAdmin);
+
+        const { error } = await supabase
+          .from("jogadores")
+          .update({ pontos_semanal: nuevosPuntos })
+          .eq("id", jugador.id);
+
+        if (error) {
+          alert(error.message);
+          return;
+        }
+
+        alert("Puntos restados ✅");
+        location.reload();
+      }}
+    >
+      ➖ Restar puntos
+    </button>
+
+  </div>
+)}
 
             <div
               style={{
