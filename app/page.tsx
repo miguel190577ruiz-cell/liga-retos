@@ -575,6 +575,7 @@ export default function Home() {
       overflowY: "auto",
       padding: "20px",
       color: "white",
+      animation: "fadeIn 0.35s ease-out",
     }}
   >
     <h1
@@ -632,6 +633,10 @@ border:
               textAlign: "center",
               transform:
                 pos === 0 ? "scale(1.08)" : "scale(1)",
+                animation:
+  pos === 0
+    ? "pulseGold 1.6s infinite ease-in-out"
+    : "none",
             }}
           >
             <div style={{ fontSize: "28px", marginBottom: "10px" }}>
@@ -951,3 +956,15 @@ const inputStyle = {
   border: "none",
   marginBottom: "10px",
 };
+const animaciones = `
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+`;
