@@ -1,5 +1,5 @@
 "use client";
-
+import type { CSSProperties } from "react";
 import { useEffect, useState } from "react";
 import { createClient } from "@supabase/supabase-js";
 
@@ -936,7 +936,7 @@ const modalFondo = {
   padding: "20px",
 };
 
-const modalCaja = {
+const modalCaja: CSSProperties = {
   width: "100%",
   maxWidth: "380px",
   background: "#020617",
