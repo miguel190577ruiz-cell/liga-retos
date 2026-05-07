@@ -727,7 +727,7 @@ border:
       position: "fixed",
       inset: 0,
       background:
-  "linear-gradient(180deg, #3b2a00 0%, #020617 55%, #000000 100%)",
+  "linear-gradient(180deg, #f3f949 0%, #756716 55%, #957f3181 100%)",
       zIndex: 5000,
       overflowY: "auto",
       padding: "20px",
