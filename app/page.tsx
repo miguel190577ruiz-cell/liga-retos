@@ -726,7 +726,8 @@ border:
     style={{
       position: "fixed",
       inset: 0,
-      background: "#020617",
+      background:
+  "linear-gradient(180deg, #3b2a00 0%, #020617 55%, #000000 100%)",
       zIndex: 5000,
       overflowY: "auto",
       padding: "20px",
