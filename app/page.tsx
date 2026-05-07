@@ -640,7 +640,13 @@ border:
             }}
           >
             <div style={{ fontSize: "28px", marginBottom: "10px" }}>
-              {pos === 0 ? "👑" : "⚽"}
+              {
+  pos === 0
+    ? "👑"
+    : pos === 1
+    ? "⚽"
+    : "👕"
+}
             </div>
 
             <div style={{ fontWeight: "bold" }}>
@@ -727,7 +733,7 @@ border:
       position: "fixed",
       inset: 0,
       background:
-  "linear-gradient(180deg, #101103 0%, #756716 55%, #957f3181 100%)",
+  "linear-gradient(180deg, #8a921a 0%, #756716 55%, #050502 100%)",
       zIndex: 5000,
       overflowY: "auto",
       padding: "20px",
@@ -780,7 +786,13 @@ border:
             }}
           >
             <div style={{ fontSize: "28px", marginBottom: "10px" }}>
-              {pos === 0 ? "👑" : "⚽"}
+              {
+  pos === 0
+    ? "👑"
+    : pos === 1
+    ? "⚽"
+    : "👕"
+}
             </div>
 
             <div style={{ fontWeight: "bold" }}>#{pos + 1}</div>
