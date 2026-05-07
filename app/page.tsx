@@ -52,6 +52,47 @@ export default function Home() {
     carregarDesafios();
     carregarJogadores();
   }, []);
+async function reiniciarSemanal() {
+  const confirmar = confirm(
+    "¿Seguro que quieres poner a 0 todos los puntos semanales?"
+  );
+
+  if (!confirmar) return;
+
+  const { error } = await supabase
+    .from("jogadores")
+    .update({ pontos_semanal: 0 })
+    .neq("id", 0);
+
+  if (error) {
+    alert("Error al reiniciar semanal");
+    return;
+  }
+
+  alert("Puntos semanales reiniciados");
+  location.reload();
+}
+
+async function reiniciarMensual() {
+  const confirmar = confirm(
+    "¿Seguro que quieres poner a 0 todos los puntos mensuales?"
+  );
+
+  if (!confirmar) return;
+
+  const { error } = await supabase
+    .from("jogadores")
+    .update({ pontos_mensal: 0 })
+    .neq("id", 0);
+
+  if (error) {
+    alert("Error al reiniciar mensual");
+    return;
+  }
+
+  alert("Puntos mensuales reiniciados");
+  location.reload();
+}
 
   return (
     <main
@@ -549,7 +590,25 @@ export default function Home() {
               <button style={adminBtn} onClick={() => setModoAdmin("editarDesafios")}>
                 🎯 Editar desafíos
               </button>
+<button
+  style={{
+    ...adminBtn,
+    background: "#dc2626",
+  }}
+  onClick={reiniciarSemanal}
+>
+  🔄 Reiniciar semanal
+</button>
 
+<button
+  style={{
+    ...adminBtn,
+    background: "#b45309",
+  }}
+  onClick={reiniciarMensual}
+>
+  🏆 Reiniciar mensual
+</button>
               <button
                 style={adminBtn}
                 onClick={() => {
