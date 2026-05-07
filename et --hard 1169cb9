@@ -1,0 +1,13 @@
+[33m830e449[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m ajustes ranking mensual
+[33m75a3d8e[m fix modalCaja
+[33m15e7b34[m fix typescript modal
+[33md6a95f2[m fix botones semanal mensual movil
+[33mfc97b44[m pwa icono app instalada
+[33m1258770[m puntos semanal y mensual funcionando
+[33m16ba1d1[m ranking semanal y mensual visual funcionando
+[33m9d89b4c[m pantalla ranking semanal funcionando
+[33m35d4493[m gestionar puntos semanal funcionando
+[33m1169cb9[m backup funcionando admin y modales
+[33m61903b1[m[33m ([m[1;33mtag: [m[1;33mversion-admin-pin[m[33m)[m admin con pin y panel inicial
+[33mb077f4f[m[33m ([m[1;33mtag: [m[1;33mversion-perfecta-online[m[33m)[m corrige zIndex para deploy
+[33mf8136dc[m version funcionando movil

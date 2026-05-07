@@ -722,153 +722,126 @@ border:
   </div>
 )}
 {pantalla === "mensal" && (
-  <div style={modalFondo}>
-    <div style={modalCaja}>
-      <h1
-        style={{
-          textAlign: "center",
-          fontSize: "42px",
-          marginBottom: "10px",
-        }}
-      >
-        🏆 CLASIFICAÇAO
-      </h1>
+  <div
+    style={{
+      position: "fixed",
+      inset: 0,
+      background: "#020617",
+      zIndex: 5000,
+      overflowY: "auto",
+      padding: "20px",
+      color: "white",
+      animation: "fadeIn 0.35s ease-out",
+    }}
+  >
+    <h1 style={{ textAlign: "center", fontSize: "34px", marginBottom: "6px" }}>
+      🏆 CLASIFICAÇAO
+    </h1>
 
-      <h2
-        style={{
-          textAlign: "center",
-          color: "#22c55e",
-          marginBottom: "30px",
-        }}
-      >
-        MENSUAL
-      </h2>
+    <h2 style={{ textAlign: "center", color: "#22c55e", marginBottom: "24px" }}>
+      MENSUAL
+    </h2>
 
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "flex-end",
-          gap: "10px",
-          marginBottom: "30px",
-        }}
-      >
-        {[1, 0, 2].map((pos) => {
-          const j = jogadores[pos];
+    <div
+      style={{
+        display: "grid",
+        gridTemplateColumns: "1fr 1fr 1fr",
+        gap: "10px",
+        marginBottom: "24px",
+        alignItems: "end",
+      }}
+    >
+      {[1, 0, 2].map((pos) => {
+        const j = jogadores[pos];
+        if (!j) return <div key={pos}></div>;
 
-          if (!j) return null;
-
-          return (
-            <div
-              key={pos}
-              style={{
-                flex: 1,
-                background:
-  pos === 0
-    ? "rgba(255,215,0,0.12)"
-    : pos === 1
-    ? "rgba(192,192,192,0.10)"
-    : "rgba(205,127,50,0.10)",
-
-border:
-  pos === 0
-    ? "3px solid gold"
-    : pos === 1
-    ? "2px solid silver"
-    : "2px solid #cd7f32",
-                borderRadius: "24px",
-                padding: "20px 10px",
-                textAlign: "center",
-                minHeight: pos === 0 ? "260px" : "210px",
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "center",
-              }}
-            >
-              <div style={{ fontSize: "52px" }}>
-                {pos === 0 ? "👑" : "⚽"}
-              </div>
-
-              <div
-                style={{
-                  fontSize: "20px",
-                  fontWeight: "bold",
-                  marginTop: "10px",
-                }}
-              >
-                #{pos + 1}
-              </div>
-
-              <div
-                style={{
-                  fontSize: "18px",
-                  fontWeight: "bold",
-                  marginTop: "14px",
-                }}
-              >
-                {j.nome}
-              </div>
-
-              <div
-                style={{
-                  color: "#22c55e",
-                  fontSize: "20px",
-                  fontWeight: "bold",
-                  marginTop: "14px",
-                }}
-              >
-                {j.pontos_mensal || 0} pts
-              </div>
-            </div>
-          );
-        })}
-      </div>
-
-      <div style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
-        {jogadores.map((j, i) => (
+        return (
           <div
             key={j.id}
             style={{
-              background: "rgba(255,255,255,0.04)",
-              border: "1px solid rgba(255,255,255,0.08)",
+              background:
+                pos === 0
+                  ? "rgba(255,215,0,0.12)"
+                  : pos === 1
+                  ? "rgba(192,192,192,0.10)"
+                  : "rgba(205,127,50,0.10)",
+              border:
+                pos === 0
+                  ? "3px solid gold"
+                  : pos === 1
+                  ? "2px solid silver"
+                  : "2px solid #cd7f32",
               borderRadius: "20px",
-              padding: "18px",
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              fontWeight: "bold",
-              fontSize: "20px",
+              padding: "18px 10px",
+              textAlign: "center",
+              transform: pos === 0 ? "scale(1.08)" : "scale(1)",
+              animation: pos === 0 ? "pulseGold 1.6s infinite ease-in-out" : "none",
             }}
           >
-            <span>
-              #{i + 1} {j.nome}
-            </span>
+            <div style={{ fontSize: "28px", marginBottom: "10px" }}>
+              {pos === 0 ? "👑" : "⚽"}
+            </div>
 
-            <span style={{ color: "#22c55e" }}>
-              {j.pontos_mensal || 0} pts
-            </span>
+            <div style={{ fontWeight: "bold" }}>#{pos + 1}</div>
+
+            <div style={{ fontWeight: "bold", marginTop: "8px", fontSize: "16px" }}>
+              {j.nome}
+            </div>
+
+            <div style={{ color: "#22c55e", marginTop: "8px", fontWeight: "bold" }}>
+              {j.pontos_mensal} pts
+            </div>
           </div>
-        ))}
-      </div>
-
-      <button
-        style={{
-          width: "100%",
-          marginTop: "20px",
-          padding: "14px",
-          borderRadius: "14px",
-          border: "none",
-          background: "#22c55e",
-          color: "black",
-          fontWeight: "bold",
-        }}
-        onClick={() => setPantalla("inicio")}
-      >
-        Fechar
-      </button>
+        );
+      })}
     </div>
+
+    <div>
+      {jogadores.slice(0, 12).map((j: any, i) => (
+        <div
+          key={j.id}
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            background: "rgba(255,255,255,0.05)",
+            border: "1px solid #1f2937",
+            borderRadius: "14px",
+            padding: "14px",
+            marginBottom: "10px",
+          }}
+        >
+          <div>
+            <strong>
+              #{i + 1} {j.nome}
+            </strong>
+          </div>
+
+          <div style={{ color: "#22c55e", fontWeight: "bold" }}>
+            {j.pontos_mensal} pts
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <button
+      style={{
+        width: "100%",
+        marginTop: "20px",
+        padding: "14px",
+        borderRadius: "14px",
+        border: "none",
+        background: "#22c55e",
+        color: "black",
+        fontWeight: "bold",
+      }}
+      onClick={() => setPantalla("inicio")}
+    >
+      Fechar
+    </button>
   </div>
 )}
+
       {retoAbierto && (
         <div style={modalFondo}>
           <div style={modalCaja}>
