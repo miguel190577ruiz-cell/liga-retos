@@ -264,11 +264,11 @@ async function reiniciarMensual() {
           }}
         >
           <button style={menuBtn} onClick={() => setPantalla("semanal")}>
-  🏆<br />Semanal
+  🏆<br />CABECEIRAS
 </button>
 
 <button style={menuBtn} onClick={() => setPantalla("mensal")}>
-  📊<br />Mensal
+  🏆<br />FELGUEIRAS
 </button>
           <button
             style={menuBtn}
@@ -399,33 +399,62 @@ async function reiniciarMensual() {
                   style={inputStyle}
                 />
 
-                <button
-                  style={adminBtn}
-                  onClick={async () => {
-                    if (!nuevoJugador) return;
+             <button
+  style={adminBtn}
+  onClick={async () => {
+    if (!nuevoJugador) return;
 
-                    const { error } = await supabase
-                      .from("jogadores")
-                      .insert([
-                        {
-                          nome: nuevoJugador,
-                          pontos_semanal: 0,
-                          pontos_mensal: 0,
-                        },
-                      ]);
+    const { error } = await supabase
+      .from("jogadores")
+      .insert([
+        {
+          nome: nuevoJugador,
+          pontos_cabeceiras: 0,
+          pontos_felgueiras: 0,
+          liga: "cabeceiras",
+        },
+      ]);
 
-                    if (error) {
-                      alert("ERROR AÑADIENDO: " + error.message);
-                      return;
-                    }
+    if (error) {
+      alert("ERROR AÑADIENDO: " + error.message);
+      return;
+    }
 
-                    alert("Jugador añadido ✅");
-                    setNuevoJugador("");
-                    location.reload();
-                  }}
-                >
-                  💾 Guardar jugador
-                </button>
+    alert("Jugador añadido a Cabeceiras ✅");
+    setNuevoJugador("");
+    location.reload();
+  }}
+>
+  ➕ Añadir a Cabeceiras
+</button>
+<button
+  style={adminBtn}
+  onClick={async () => {
+    if (!nuevoJugador) return;
+
+    const { error } = await supabase
+      .from("jogadores")
+      .insert([
+        {
+          nome: nuevoJugador,
+          pontos_cabeceiras: 0,
+          pontos_felgueiras: 0,
+          liga: "felgueiras",
+        },
+      ]);
+
+    if (error) {
+      alert("ERROR AÑADIENDO: " + error.message);
+      return;
+    }
+
+    alert("Jugador añadido a Felgueiras ✅");
+    setNuevoJugador("");
+    location.reload();
+  }}
+>
+  ➕ Añadir a Felgueiras
+</button>
               </div>
             )}
 
@@ -654,7 +683,7 @@ async function reiniciarMensual() {
         marginBottom: "24px",
       }}
     >
-      SEMANAL
+      CABECEIRAS
     </h2>
 
     <div
@@ -667,7 +696,12 @@ async function reiniciarMensual() {
       }}
     >
       {[1, 0, 2].map((pos) => {
-        const j = jogadores[pos];
+        const listaCabeceiras = jogadores.filter(
+  (j: any) => j.liga === "cabeceiras"
+);
+
+const j = listaCabeceiras[pos];
+  
         if (!j) return <div key={pos}></div>;
 
         return (
@@ -737,7 +771,9 @@ border:
     </div>
 
     <div>
-      {jogadores.map((j: any, i) => (
+      {jogadores
+  .filter((j: any) => j.liga === "cabeceiras")
+  .map((j: any, i) => (
         <div
           key={j.id}
           style={{
@@ -753,7 +789,7 @@ border:
         >
           <div>
             <strong>
-              #{i + 1} {j.nome}
+              #{i + 4} {j.nome}
             </strong>
           </div>
 
@@ -805,7 +841,7 @@ border:
     </h1>
 
     <h2 style={{ textAlign: "center", color: "#22c55e", marginBottom: "24px" }}>
-      MENSUAL
+      FELGUEIRAS
     </h2>
 
     <div
@@ -818,7 +854,11 @@ border:
       }}
     >
       {[1, 0, 2].map((pos) => {
-        const j = jogadores[pos];
+      const listaFelgueiras = jogadores.filter(
+  (j: any) => j.liga === "felgueiras"
+);
+
+const j = listaFelgueiras[pos];
         if (!j) return <div key={pos}></div>;
 
         return (
@@ -869,7 +909,9 @@ border:
     </div>
 
     <div>
-      {jogadores.slice(0, 12).map((j: any, i) => (
+      {jogadores
+  .filter((j: any) => j.liga === "felgueiras")
+  .map((j: any, i) => (
         <div
           key={j.id}
           style={{
@@ -885,7 +927,7 @@ border:
         >
           <div>
             <strong>
-              #{i + 1} {j.nome}
+              #{i + 4} {j.nome}
             </strong>
           </div>
 
