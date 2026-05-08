@@ -270,6 +270,12 @@ async function reiniciarMensual() {
 <button style={menuBtn} onClick={() => setPantalla("mensal")}>
   🏆<br />FELGUEIRAS
 </button>
+<button
+  style={menuBtn}
+  onClick={() => setPantalla("outras")}
+>
+  🌍<br />OUTRAS
+</button>
           <button
             style={menuBtn}
             onClick={() => {
@@ -957,7 +963,88 @@ const j = listaFelgueiras[pos];
     </button>
   </div>
 )}
+{pantalla === "outras" && (
+  <div
+    style={{
+      position: "fixed",
+      inset: 0,
+      background: "#020617",
+      zIndex: 5000,
+      overflowY: "auto",
+      padding: "20px",
+      color: "white",
+    }}
+  >
+    <h1
+      style={{
+        textAlign: "center",
+        fontSize: "34px",
+        marginBottom: "10px",
+      }}
+    >
+      🌍 OUTRAS LIGAS
+    </h1>
 
+    <h2
+      style={{
+        textAlign: "center",
+        color: "#22c55e",
+        marginBottom: "30px",
+      }}
+    >
+      Em breve
+    </h2>
+
+    {[
+      "🥉 Liga Bronze",
+      "🥈 Liga Prata",
+      "🥇 Liga Ouro",
+      "👑 Liga dos Campeões",
+    ].map((liga) => (
+      <div
+        key={liga}
+        style={{
+          background: "rgba(255,255,255,0.06)",
+          border: "1px solid #334155",
+          borderRadius: "18px",
+          padding: "18px",
+          marginBottom: "14px",
+          fontWeight: "bold",
+          fontSize: "20px",
+        }}
+      >
+        {liga}
+
+        <div
+          style={{
+            fontSize: "14px",
+            color: "#94a3b8",
+            marginTop: "8px",
+          }}
+        >
+          🔒 Bloqueada — sobe de nível para desbloquear
+        </div>
+      </div>
+    ))}
+
+    <button
+      style={{
+        width: "100%",
+        marginTop: "24px",
+        padding: "16px",
+        borderRadius: "14px",
+        border: "none",
+        background: "#22c55e",
+        color: "black",
+        fontWeight: "bold",
+        fontSize: "18px",
+      }}
+      onClick={() => setPantalla("")}
+    >
+      Fechar
+    </button>
+  </div>
+)}
       {retoAbierto && (
         <div style={modalFondo}>
           <div style={modalCaja}>
