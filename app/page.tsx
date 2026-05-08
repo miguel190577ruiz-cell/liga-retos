@@ -19,6 +19,24 @@ export default function Home() {
   const [pinCorrecto, setPinCorrecto] = useState(false);
   const [pinInput, setPinInput] = useState("");
   const [jogadores, setJogadores] = useState<any[]>([]);
+  async function registrarEntrada() {
+  let visitante = localStorage.getItem("visitante_id");
+
+  if (!visitante) {
+    visitante = crypto.randomUUID();
+    localStorage.setItem("visitante_id", visitante);
+  }
+
+  await supabase.from("analytics_eventos").insert([
+    {
+      visitante_id: visitante,
+      evento: "app_open",
+    },
+  ]);
+}
+useEffect(() => {
+  registrarEntrada();
+}, []);
 
   useEffect(() => {
     async function carregarDesafios() {
