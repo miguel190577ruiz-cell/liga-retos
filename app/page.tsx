@@ -773,6 +773,7 @@ border:
     <div>
       {jogadores
   .filter((j: any) => j.liga === "cabeceiras")
+  .slice(3)
   .map((j: any, i) => (
         <div
           key={j.id}
@@ -911,6 +912,7 @@ const j = listaFelgueiras[pos];
     <div>
       {jogadores
   .filter((j: any) => j.liga === "felgueiras")
+  .slice(3)
   .map((j: any, i) => (
         <div
           key={j.id}
